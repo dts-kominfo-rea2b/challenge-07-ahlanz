@@ -6,12 +6,15 @@ const promiseOutput = (emosi) => {
     if (emosi === "marah") {
       (async () => {
         const sumIIX = count(await promiseTheaterIXX(), emosi);
-        const sumVGC = count (await promiseTheaterVGC(), emosi);
+        const sumVGC = count(await promiseTheaterVGC(), emosi);
         resolve(sumIIX + sumVGC);
       })();
     } else if (emosi === "tidak marah") {
-      const sumIX = count (await promiseTheaterIXX(), emosi); 
-      const sumVGC = count (await promiseTheaterVGC(), emosi);
+      (async () => {
+        const sumIX = count(await promiseTheaterIXX(), emosi);
+        const sumVGC = count(await promiseTheaterVGC(), emosi);
+        resolve(sumIX + sumVGC);
+      })();
     } else {
       reject("Emosi tidak valid");
     }
@@ -19,17 +22,23 @@ const promiseOutput = (emosi) => {
 };
 
 const count = (data, emosi) => {
-  let count = 0;
-  for (let i = 0; i < data.length; i++) {
-    if (data[i].hasil === emosi) {
-      count++;
-    };
-  };
+  let count = 2;
+
+  if (emosi === "marah") {
+    for (let i = 0; i < data.length; i++) {
+      if (data[i].emosi === "marah") {
+        count++;
+      }
+    }
+  } else {
+    for (let i = 0; i < data.length; i++) {
+      if (data[i].emosi === "tidak marah") {
+        count++;
+      }
+    }
+  }
   return count;
 };
-
-
-
 
 module.exports = {
   promiseOutput,
